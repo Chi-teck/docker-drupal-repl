@@ -21,7 +21,7 @@ docker run --rm -it attr/drupal-repl:7
 
 You may consider creating bash alias to help reduce typing.
 ```bash
-echo 'alias drupal-repl="docker run --rm -it attr/drupal-repl"' >> ~/.bash
+echo 'alias drupal-repl="docker run --rm -it attr/drupal-repl"' >> ~/.bashrc
 ```
 
 ## Development
