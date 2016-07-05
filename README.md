@@ -4,17 +4,17 @@ A Docker container to run PHP REPL ([PSYSH](http://psysh.org/)) against a sample
 
 ## Usage
 
-Latest Drupal version
+Latest Drupal version:
 ```bash
 docker run --rm -it attr/drupal-repl
 ```
 
-Stable Drupal 8 version
+Stable Drupal 8 version:
 ```bash
 docker run --rm -it attr/drupal-repl:8
 ```
 
-Stable Drupal 7 version
+Stable Drupal 7 version:
 ```bash
 docker run --rm -it attr/drupal-repl:7
 ```
