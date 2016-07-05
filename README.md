@@ -1,6 +1,6 @@
 # Drupal REPL docker container
 
-A Docker container to run PHP REPL ([PSYSH](http://psysh.org/)) against a sample Drupal site.
+A Docker container to run PHP REPL ([PsySH](http://psysh.org/)) against a sample Drupal site.
 
 ## Usage
 
