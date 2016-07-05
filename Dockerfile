@@ -6,9 +6,9 @@ ARG DRUPAL_VERSION
 
 # Add common extensions.
 RUN apt-get update && \
-	apt-get -y install sqlite3 && \
-	apt-get -y install libsqlite3-dev && \
-	apt-get -y install libpng12-dev
+    apt-get -y install sqlite3 && \
+    apt-get -y install libsqlite3-dev && \
+    apt-get -y install libpng12-dev
 
 # Install required php exstensions.
 RUN docker-php-ext-install pdo_sqlite gd
@@ -18,6 +18,6 @@ RUN curl -L --output /usr/local/bin/drush https://github.com/drush-ops/drush/rel
 
 # Install Drupal
 RUN drush dl drupal-$DRUPAL_VERSION --destination=/root --drupal-project-rename=drupal && \
-	drush si -y -r /root/drupal --db-url=sqlite://sites/default/files/db.sqlite --site-name=drupal-repl
+    drush si -y -r /root/drupal --db-url=sqlite://sites/default/files/db.sqlite --site-name=drupal-repl
 
 ENTRYPOINT ["drush", "-r", "/root/drupal", "php"]
