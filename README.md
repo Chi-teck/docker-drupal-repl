@@ -31,3 +31,5 @@ cd docker-drupal-repl
 docker build --build-arg DRUSH_VERSION=8.1.2 --build-arg DRUPAL_VERSION=8 -t my/drupal-repl:8 .
 ```
 
+## Notes
+Use CTRL + D to exit the REPL.
