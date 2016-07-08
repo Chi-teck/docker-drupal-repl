@@ -6,9 +6,9 @@ ARG DRUPAL_VERSION=8.2.x
 
 # Add common extensions.
 RUN apt-get update && \
-	apt-get -y install sqlite3 && \
-	apt-get -y install libsqlite3-dev && \
-	apt-get -y install libpng12-dev
+    apt-get -y install sqlite3 && \
+    apt-get -y install libsqlite3-dev && \
+    apt-get -y install libpng12-dev
 
 # Install required php exstensions.
 RUN docker-php-ext-install pdo_sqlite gd
