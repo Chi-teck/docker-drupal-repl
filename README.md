@@ -5,7 +5,7 @@ A Docker container to run PHP REPL ([PsySH](http://psysh.org/)) against a sample
 ## Usage
 
 ```bash
-docker run --rm -it attr/drupal-repl
+docker run --rm -it attr/docker-drupal-repl
 ```
 
 ## Notes
