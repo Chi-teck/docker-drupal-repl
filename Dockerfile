@@ -1,26 +1,21 @@
 FROM php
 
-# Declare arguments.
-ARG DRUSH_VERSION=8.1.2
-ARG DRUPAL_VERSION=8.2.x
-
 # Add common extensions.
-RUN apt-get update && \
-    apt-get -y install sqlite3 && \
-    apt-get -y install libsqlite3-dev && \
-    apt-get -y install libpng12-dev
+RUN apt-get update && apt-get -y install sqlite3 libsqlite3-dev libpng12-dev
 
 # Install required php exstensions.
-RUN docker-php-ext-install pdo_sqlite gd
+RUN docker-php-ext-install gd zip
 
 # Install Drush.
-RUN curl -L --output /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar && chmod +x /usr/local/bin/drush
+RUN curl -L --output /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/8.1.11/drush.phar && chmod +x /usr/local/bin/drush
 
-# Install Drupal.
-RUN drush dl drupal-$DRUPAL_VERSION --destination=/root --drupal-project-rename=drupal && \
-    drush si -y -r /root/drupal --db-url=sqlite://sites/default/files/db.sqlite --site-name=drupal-repl
+# Download Drupal.
+RUN drush dl drupal-8 --destination=/root --drupal-project-rename=drupal
 
-# Disable Cron.
-RUN ["/bin/bash", "-c", "if [[ ${DRUPAL_VERSION:0:1} = 8 ]]; then drush -r /root/drupal -y config-set automated_cron.settings interval 0; fi;"]
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-ENTRYPOINT ["drush", "-r", "/root/drupal", "php"]
+RUN composer require -d=/root/drupal --prefer-dist drush/drush
+
+RUN /root/drupal/vendor/bin/drush si -y -r /root/drupal --db-url=sqlite://sites/default/files/db.sqlite --site-name=drupal-repl
+
+ENTRYPOINT ["/root/drupal/vendor/bin/drush", "-r", "/root/drupal", "php"]
