@@ -1,21 +1,19 @@
 FROM php
 
-# Add common extensions.
-RUN apt-get update && apt-get -y install sqlite3 libsqlite3-dev libpng12-dev
+RUN apt-get update && apt-get -y install sqlite3 libsqlite3-dev libpng-dev libzip-dev
 
-# Install required php exstensions.
 RUN docker-php-ext-install gd zip
-
-# Install Drush.
-RUN curl -L --output /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/8.1.11/drush.phar && chmod +x /usr/local/bin/drush
-
-# Download Drupal.
-RUN drush dl drupal-8 --destination=/root --drupal-project-rename=drupal
 
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-RUN composer require -d=/root/drupal --prefer-dist drush/drush
+RUN curl --output /tmp/drupal.tar.gz https://ftp.drupal.org/files/projects/drupal-8.7.6.tar.gz && \
+    tar -xf /tmp/drupal.tar.gz && \
+    mv drupal-8.7.6 /root/drupal
 
-RUN /root/drupal/vendor/bin/drush si -y -r /root/drupal --db-url=sqlite://sites/default/files/db.sqlite --site-name=drupal-repl
+RUN rm /root/drupal/composer.lock && \
+    composer require --working-dir=/root/drupal --no-update drush/drush && \
+    composer --working-dir=/root/drupal install --no-dev
+
+RUN php /root/drupal/core/scripts/drupal install standard
 
 ENTRYPOINT ["/root/drupal/vendor/bin/drush", "-r", "/root/drupal", "php"]
